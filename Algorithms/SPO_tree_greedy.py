@@ -77,7 +77,7 @@ class SPOTree(object):
       if self.SPO_full_error == True:
         SPO_loss_bound = -float("inf")
         for i in range(num_obs):
-          SPO_loss = -find_opt_decigetsion(-C[i,:].reshape(1,-1),**kwargs)['objective'][0] - A[i]
+          SPO_loss = -find_opt_decision(-C[i,:].reshape(1,-1),**kwargs)['objective'][0] - A[i]
           if SPO_loss >= SPO_loss_bound:
             SPO_loss_bound = SPO_loss
         

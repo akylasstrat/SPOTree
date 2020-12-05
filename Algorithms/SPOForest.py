@@ -89,7 +89,7 @@ class SPOForest(object):
     
     if seed is not None:
       np.random.seed(seed)
-    tree_seeds = np.random.randint(0, high=2**32-1, size=self.n_estimators, dtype=np.int64)
+    tree_seeds = np.random.randint(0, high=2**32-1, size=self.n_estimators)
     
     
     if self.num_workers == 1:
