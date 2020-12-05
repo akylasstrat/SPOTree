@@ -1,6 +1,8 @@
-"""
-SPO RANDOM FOREST IMPLEMENTATION
 
+"""
+SPO Extremely Randomized Trees IMPLEMENTATION
+
+Extends the SPO Forest similar to the ExtraTrees algorithm
 This code will work for general predict-then-optimize applications. Fits SPO Forest to dataset of feature-cost pairs.
 
 The structure of the decision-making problem of interest should be encoded in a file called decision_problem_solver.py. 
@@ -9,14 +11,14 @@ Specifically, this code requires two functions:
   find_opt_decision(): returns for a matrix of cost vectors the corresponding optimal decisions for those cost vectors 
 """
 import numpy as np
-from mtp import MTP
+from mtp_extra import MTP
 from decision_problem_solver import*
 from scipy.spatial import distance
-from SPO_tree_greedy import SPOTree
+from SPO_tree_greedy_Extra import SPOTree_Extra
 from joblib import Parallel, delayed
 from collections import Counter
 
-class SPOForest(object):
+class SPOExtra(object):
   '''
   This function initializes the SPO forest
   
@@ -55,10 +57,9 @@ class SPOForest(object):
       num_workers = -1 #this uses all available cpu cores
     self.run_in_parallel = run_in_parallel
     self.num_workers = num_workers
-    
     self.forest = [None]*n_estimators
     for t in range(n_estimators):
-      self.forest[t] = SPOTree(**kwargs)
+      self.forest[t] = SPOTree_Extra(**kwargs)
   
   '''
   This function fits the SPO forest on data (X,C,weights).
@@ -97,10 +98,11 @@ class SPOForest(object):
         if verbose_forest == True:
           print("Fitting tree " + str(t+1) + "out of " + str(self.n_estimators))
         np.random.seed(tree_seeds[t]) 
-        bootstrap_inds = np.random.choice(range(num_obs), size=num_obs, replace=True)
-        Xb = np.copy(X[bootstrap_inds])
-        Cb = np.copy(C[bootstrap_inds])
-        weights_b = np.copy(weights[bootstrap_inds])
+        #Use whole dataset instead of bootstrapping
+        Xb = np.copy(X)
+        Cb = np.copy(C)
+        weights_b = np.copy(weights)
+        
         self.forest[t].fit(Xb, Cb, weights=weights_b, seed=tree_seeds[t], 
                            feats_continuous=feats_continuous, verbose=verbose, refit_leaves=refit_leaves,
                            **kwargs)
