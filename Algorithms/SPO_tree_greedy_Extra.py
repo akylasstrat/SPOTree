@@ -10,11 +10,11 @@ Specifically, this code requires two functions:
 
 """
 import numpy as np
-from mtp import MTP
+from mtp_extra import MTP
 from decision_problem_solver import*
 from scipy.spatial import distance
 
-class SPOTree(object):
+class SPOTree_Extra(object):
   '''
   This function initializes the SPO tree
   
